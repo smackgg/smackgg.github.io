@@ -532,14 +532,18 @@ a {
 }
 #header .header-subtitle {
   text-align: center;
-  color: #cf0;
-  font-size: 14px;
+  color: #0fc;
+  font-weight: bolder;
+  font-size: 16px;
   line-height: 25px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+#header .header-subtitle:hover {
+  color: #f09;
 }
 #header .header-menu {
   font-weight: 300;
