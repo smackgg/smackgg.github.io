@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Smackdown's blog">
 <meta property="og:description" content="第一章 Loading and Execution 加载和运行&quot;&amp;gt;">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img1.png">
-<meta property="og:updated_time" content="2015-07-29T14:51:16.130Z">
+<meta property="og:updated_time" content="2015-07-30T16:56:13.574Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高性能JavaScript学习笔记">
 <meta name="twitter:description" content="第一章 Loading and Execution 加载和运行&quot;&amp;gt;">
@@ -432,10 +432,28 @@ xhr.send<span class="params">(null)</span>;
 <blockquote>
 <ul>
 <li>这种方法的主要优点是， 你可以下载不立即执行的 JavaScript 代码。由于代码返回在&lt; script&gt;标签之外（换句话说不受&lt; script&gt;标签约束），它下载后不会自动执行，这使得你可以推迟执行，直到一切都准备好了。另一个优点是，同样的代码在所有现代浏览器中都不会引发异常。</li>
-<li>此方法最主要的限制是：JavaScript 文件必须与页面放置在同一个域内.正因为这个原因，大型网页通常不采用XHR脚本注入技术</li>
+<li>此方法最主要的限制是：JavaScript 文件必须与页面放置在同一个域内。正因为这个原因，大型网页通常不采用XHR脚本注入技术。</li>
 </ul>
 </blockquote>
-
+<p><strong>Recommended Nonblocking Pattern 推荐的非阻塞模式</strong></p>
+<blockquote>
+<p>推荐的向页面加载大量 JavaScript 的方法分为两个步骤：第一步，包含动态加载 JavaScript 所需的代码，然后加载页面初始化所需的除 JavaScript 之外的部分。这部分代码尽量小，可能只包含loadScript()函数，它下载和运行非常迅速，不会对页面造成很大干扰。当初始代码准备好之后，用它来加载其余的 JavaScript。例如：</p>
+</blockquote>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"loader.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="lua">
+    loadScript(<span class="string">"the-rest.js"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span></span><span class="expression">{
+        <span class="variable">Application.init</span>();
+    }</span><span class="xml"><span class="dns">)<span class="comment">;</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre><p>将这段代码放到&lt; /body&gt;标签之前。首先，这样可以确保JavaScript运行不会影响页面其它部分显示。其次，当第二部分 JavaScript 文件完成下载，所有应用程序所必须的 DOM 已经创建好了，并做好被访问的准备，避免使用额外的事件处理（例如 window.onload）来得知页面是否已经准备好了。</p>
+<blockquote>
+<p>也可以直接将loadScript函数嵌入在页面中，来避免另一次HTTP请求。</p>
+</blockquote>
+<p>如果你决定使用这种方法，建议你使用“YUI Compressor”(参见第 9 章)或者类似的工具将初始化脚本缩小到最小字节尺寸。一旦页面初始化代码下载完成，你还可以使用loadScript()函数加载页面所需的额外功能函数。</p>
+<p><strong>The YUI3 approach</strong><br>YUI 3 的核心设计理念为：用一个很小的初始代码，下载其余的功能代码。要在页面上使用YUI 3，首先包含 YUI 的种子文件.</p>
+<pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>
+<span class="attribute">src</span>=<span class="value">http:</span>//<span class="attribute">yui.yahooapis.com</span>/<span class="attribute">combo</span>?<span class="attribute">3.0.0</span>/<span class="attribute">build</span>/<span class="attribute">yui</span>/<span class="attribute">yui-min.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</code></pre>
       
     </div>
     
@@ -506,14 +524,6 @@ xhr.send<span class="params">(null)</span>;
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
       	</div>
     </div>
-    <script type="text/javascript">
-      (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-      (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-      e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-      })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-      _st('install','RnGwHJm7cpYREt5VFyLH','2.0.0');
-    </script>
   </div>
 </footer>
     </div>
