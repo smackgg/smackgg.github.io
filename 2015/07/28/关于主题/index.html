@@ -14,7 +14,7 @@
 <meta property="og:description" content="很早就搭出的博客，一直没有时间折腾，大三的时间实在是太紧了。这段时间终于腾出点时间，能让我好好的收拾一下自己的博客。将主题优化了一下，本主题基于 Yilia主题做的优化。后续我会把我优化后的主题传到我的github上。还有很多不足之处和bug需要更改，希望大家评论告诉我，看到一定回复。
 &quot;&amp;gt;">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/二维码.png">
-<meta property="og:updated_time" content="2015-07-29T18:36:26.396Z">
+<meta property="og:updated_time" content="2015-07-30T05:27:26.992Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于主题">
 <meta name="twitter:description" content="很早就搭出的博客，一直没有时间折腾，大三的时间实在是太紧了。这段时间终于腾出点时间，能让我好好的收拾一下自己的博客。将主题优化了一下，本主题基于 Yilia主题做的优化。后续我会把我优化后的主题传到我的github上。还有很多不足之处和bug需要更改，希望大家评论告诉我，看到一定回复。
@@ -36,7 +36,7 @@
 	  s.parentNode.insertBefore(hm, s);
 	})();
 </script>
-   
+
 </head>
 <body>
   <div id="container">
@@ -110,6 +110,20 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+				        	<li class="closeBg"><a onclick=closeBg()>开启阅读模式</a></li>
+				        	<li class="openBg" style="display:none"><a onclick=openBg()>关闭阅读模式</a></li>
+				        	<script>
+				        		function closeBg(){
+				        			$('body').css("background-image","none");
+				        			$('.closeBg').css("display","none");
+				        			$('.openBg').css("display","block");
+				        		}
+				        		function openBg(){
+				  					$('body').css("background-image","url(http://7xkj1z.com1.z0.glb.clouddn.com/bg1.jpg)");
+				  					$('.openBg').css("display","none");
+				        			$('.closeBg').css("display","block");	
+				        		}
+				        	</script>
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -247,11 +261,13 @@
 <h2 id="<!-more->"><a id="more"></a></h2><blockquote>
 <ul>
 <li>Yilia 是为 hexo 2.4+制作的主题。 </li>
-<li>崇尚简约优雅，以及极致的性能。</li>
+<li>响应式开发</li>
+<li>崇尚极致的性能。</li>
 <li>主题能很好的兼容移动端。</li>
+<li><strong>因为我优化的主题（包括一些颜色）可能比较让人眼花缭乱，所以增加了阅读模式，关闭背景图片，方便阅读。</strong></li>
 </ul>
 </blockquote>
-<p><strong>体验手机版的可以扫一下我的二维码</strong></p>
+<p>**体验手机版的可以扫一下我的二维码。</p>
 <p><img src="http://7xkj1z.com1.z0.glb.clouddn.com/二维码.png" alt="GitHub Mark" title="GitHub Mark"></p>
 <h1 id="以下内容转自Yilia原主题的READEME"><strong> <em> 以下内容转自Yilia原主题的READEME</em> </strong></h1><hr>
 <h1 id="关于主题：">关于主题：</h1><ul>
