@@ -14,7 +14,7 @@
 <meta property="og:description" content="第一章 Loading and Execution 加载和运行本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
 &quot;&amp;gt;">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img1.png">
-<meta property="og:updated_time" content="2015-07-31T04:45:07.796Z">
+<meta property="og:updated_time" content="2015-07-31T04:48:43.083Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高性能JavaScript学习笔记">
 <meta name="twitter:description" content="第一章 Loading and Execution 加载和运行本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
@@ -492,7 +492,7 @@ xhr.send<span class="params">(null)</span>;
 <p>JavaScript代码的执行会阻塞其它浏览器的处理过程，比如界面的绘制等。只要遇到&lt; script&gt;标签，页面就必须要等待JavaScript代码的下载（如果是外部的）和执行。这样会影响性能，可能会让浏览者对着空白的浏览器等待很久。通过这一章的学习，可以总结出集中减少JavaScript对性能的影响：</p>
 <blockquote>
 <ul>
-<li>1.将所有的<script>标签尽量放在页面底部，也就是&lt; /body&gt;之前。这样可以保证页面在脚本运行前完成解析。</li>
+<li>1.将所有的&lt; script&gt;标签尽量放在页面底部，也就是&lt; /body&gt;之前。这样可以保证页面在脚本运行前完成解析。</li>
 <li>2.将脚本成组打包。&lt; script&gt;标签的数量越少，页面加载速度也就越快，响应也会加速（外部脚本和内联代码都适用）。</li>
 <li>3.用几种非阻塞方式下载JavaScript：<blockquote>
 <ul>
@@ -506,7 +506,7 @@ xhr.send<span class="params">(null)</span>;
 </blockquote>
 <hr>
 <p><strong> <em>通过使用上述策略，你可以极大提高那些大量使用 JavaScript 代码的网页应用的实际性能。</em> </strong></p>
-</script></li></ul></blockquote>
+
       
     </div>
     
