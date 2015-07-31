@@ -5,17 +5,20 @@
   
   <title>高性能JavaScript学习笔记 | Smackdown&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第一章 Loading and Execution 加载和运行&quot;&amp;gt;">
+  <meta name="description" content="第一章 Loading and Execution 加载和运行本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
+&quot;&amp;gt;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高性能JavaScript学习笔记">
 <meta property="og:url" content="http://www.winnerweb.club/2015/07/29/高性能JavaScript1/index.html">
 <meta property="og:site_name" content="Smackdown's blog">
-<meta property="og:description" content="第一章 Loading and Execution 加载和运行&quot;&amp;gt;">
+<meta property="og:description" content="第一章 Loading and Execution 加载和运行本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
+&quot;&amp;gt;">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img1.png">
-<meta property="og:updated_time" content="2015-07-30T16:56:13.574Z">
+<meta property="og:updated_time" content="2015-07-31T04:45:07.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高性能JavaScript学习笔记">
-<meta name="twitter:description" content="第一章 Loading and Execution 加载和运行&quot;&amp;gt;">
+<meta name="twitter:description" content="第一章 Loading and Execution 加载和运行本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
+&quot;&amp;gt;">
   
     <link rel="alternative" href="/atom.xml" title="Smackdown&#39;s blog" type="application/atom+xml">
   
@@ -254,7 +257,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="第一章_Loading_and_Execution_加载和运行"><strong>第一章 Loading and Execution 加载和运行</strong></h1><h2 id="<!-more->"><a id="more"></a></h2><h1 id="1-Script_Positioning_脚本位置">1.Script Positioning 脚本位置</h1><hr>
+        <h1 id="第一章_Loading_and_Execution_加载和运行"><strong>第一章 Loading and Execution 加载和运行</strong></h1><p>本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。</p>
+<h2 id="<!-more->"><a id="more"></a></h2><h1 id="1-Script_Positioning_脚本位置">1.Script Positioning 脚本位置</h1><hr>
 <p>JavaScript在浏览器中的性能，是开发者所要面对的最重要的可用性问题。这个问题因JavaScript的阻塞特征而复杂，也就是说，当JavaScript运行时其他的事情不能被浏览器处理。事实上，大多数浏览器使用单进程处理UI更新和JavaScript运行等多个任务，而同一时间只能有一个任务被执行。JavaScript运行了多长时间，那么在浏览器空闲下来响应用户输入之前的等待时间就有多长。<br>从基本层面说，这意味着&lt; script&gt;标签的出现使整个页面因脚本解析、运行而出现等待。不论实际的JavaScript代码是内联的还是包含在一个不相干的外部文件中，页面下载和解析过程必须停下，等待脚本完成这些处理，然后才能继续。这是页面生命周期必不可少的部分，因为脚本可能在运行过程中修改页面内容。典型的例子是 document.write()函数，例如：</p>
 <pre><code><span class="tag">&lt;<span class="title">html</span>&gt;</span>
 <span class="tag">&lt;<span class="title">head</span>&gt;</span>
@@ -453,7 +457,56 @@ xhr.send<span class="params">(null)</span>;
 <p><strong>The YUI3 approach</strong><br>YUI 3 的核心设计理念为：用一个很小的初始代码，下载其余的功能代码。要在页面上使用YUI 3，首先包含 YUI 的种子文件.</p>
 <pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>
 <span class="attribute">src</span>=<span class="value">http:</span>//<span class="attribute">yui.yahooapis.com</span>/<span class="attribute">combo</span>?<span class="attribute">3.0.0</span>/<span class="attribute">build</span>/<span class="attribute">yui</span>/<span class="attribute">yui-min.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-</code></pre>
+</code></pre><p>此种子文件大约 10KB（gzipped 压缩后 6KB）包含从 Yahoo! CDN 下载 YUI 组件所需的足够功能。举例来说，如果你想使用DOM功能，你可以指出它的名字（”dom”），传递给 YUI 的 use()函数，再提供一个回调函数，当代码准备好时这个回调函数将被调用</p>
+<pre><code>YUI<span class="params">()</span>.<span class="keyword">use</span><span class="params">(<span class="string">"dom"</span>, function<span class="params">(Y)</span>{
+    Y.DOM.addClass<span class="params">(docment.body, <span class="string">"loaded"</span>)</span>;
+})</span>
+</code></pre><p><strong>The LazyLoad library</strong><br>作为一个更通用的工具，Yahoo! Search 的 Ryan Grove 创建了 LazyLoad 库（参见 <a href="http://github.com/rgrove/lazyload/）。LazyLoad" target="_blank" rel="external">http://github.com/rgrove/lazyload/）。LazyLoad</a> 是一个更强大的 loadScript()函数。LazyLoad 精缩之后只有大约 1.5KB（精缩，而不是用 gzip 压缩的）。lazyLoad可以下载多个JavaScript文件，并且能保证执行顺序，只需要LazyLoad.js()函数传递一个URL队列给它。但是仍应该尽可能的减少文件的数量。每次下载都是一个单独的HTTP请求。<br><strong>The LABjs library</strong><br>另一个非阻塞 JavaScript 加载库是 LABjs（<a href="http://labjs.com/），Kyle" target="_blank" rel="external">http://labjs.com/），Kyle</a> Simpson 写的一个开源库，由 Steve Souders 赞助。此库对加载过程进行更精细的控制，并尝试并行下载尽可能多的代码。LABjs 也相当小，只有 4.50KB（精缩，而不是用 gzip 压缩的），所以具有最小的页面代码尺寸。用法举例：</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"lab.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="stylus">
+    <span class="variable">$LAB</span>.<span class="function"><span class="title">script</span><span class="params">(<span class="string">"the-rest.js"</span>)</span></span>
+        .<span class="function"><span class="title">wait</span><span class="params">(function()</span></span></span></span><span class="expression">{
+        <span class="variable">Application.init</span>();
+    }</span><span class="xml"><span class="dns">)<span class="comment">;</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre><p>$LAB.script()函数用于下载一个 JavaScript 文件，$LAB.wait()函数用于指出一个函数，该函数等待文件下载完成并运行之后才会被调用。LABjs 鼓励链操作，每个函数返回一个指向$LAB 对象的引用。要下载多个 JavaScript 文件，那么就链入另一个$LAB.script()调用</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"lab.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="stylus">
+    <span class="variable">$LAB</span>.<span class="function"><span class="title">script</span><span class="params">(<span class="string">"first-file.js"</span>)</span></span>
+        .<span class="function"><span class="title">script</span><span class="params">(<span class="string">"the-rest.js"</span>)</span></span>
+        .<span class="function"><span class="title">wait</span><span class="params">(function()</span></span></span></span><span class="expression">{
+            <span class="variable">Application.init</span>();
+        }</span><span class="xml"><span class="dns">)<span class="comment">;</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre><p>LABjs 通过 wait()函数允许你指定哪些文件应该等待其他文件。在前面的例子中，first-file.js 的代码不保证在 the-rest.js 之前运行。为保证这一点，你必须在第一个 script()函数之后添加一个 wait()调用：</p>
+<pre><code><span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"lab.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="stylus">
+    <span class="variable">$LAB</span>.<span class="function"><span class="title">script</span><span class="params">(<span class="string">"first-file.js"</span>)</span></span>.<span class="function"><span class="title">wait</span><span class="params">()</span></span>
+        .<span class="function"><span class="title">script</span><span class="params">(<span class="string">"the-rest.js"</span>)</span></span>
+        .<span class="function"><span class="title">wait</span><span class="params">(function()</span></span></span></span><span class="expression">{
+            <span class="variable">Application.init</span>();
+        }</span><span class="xml"><span class="dns">)<span class="comment">;</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre><p>现在，first-file.js 的代码保证会在 the-rest.js 之前执行，虽然两个文件的内容是并行下载的。</p>
+<h1 id="总结："><strong>总结：</strong></h1><hr>
+<p>JavaScript代码的执行会阻塞其它浏览器的处理过程，比如界面的绘制等。只要遇到&lt; script&gt;标签，页面就必须要等待JavaScript代码的下载（如果是外部的）和执行。这样会影响性能，可能会让浏览者对着空白的浏览器等待很久。通过这一章的学习，可以总结出集中减少JavaScript对性能的影响：</p>
+<blockquote>
+<ul>
+<li>1.将所有的<script>标签尽量放在页面底部，也就是&lt; /body&gt;之前。这样可以保证页面在脚本运行前完成解析。</li>
+<li>2.将脚本成组打包。&lt; script&gt;标签的数量越少，页面加载速度也就越快，响应也会加速（外部脚本和内联代码都适用）。</li>
+<li>3.用几种非阻塞方式下载JavaScript：<blockquote>
+<ul>
+<li>&lt; script&gt;标签加入defer(IE接Firefox3.5以上版本)。</li>
+<li>用 DOM 动态创建&lt; script元素，用它下载并执行代码。</li>
+<li>用 XHR 对象来下载代码，并注入页面中（需要同源）。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<hr>
+<p><strong> <em>通过使用上述策略，你可以极大提高那些大量使用 JavaScript 代码的网页应用的实际性能。</em> </strong></p>
+</script></li></ul></blockquote>
       
     </div>
     

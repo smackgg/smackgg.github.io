@@ -242,7 +242,6 @@ a {
   background: rgba(255,255,255,0.2);
   width: 300px;
   position: fixed;
-  opacity: 1;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -ms-transition: all 0.2s ease-in;
@@ -1992,10 +1991,9 @@ pre .javascript .function {
   border-radius: 0 5px 5px 0;
   margin: 5px 9px 5px 8px;
   font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
-  opacity: 0.6;
 }
 .tagcloud a:hover {
-  opacity: 1;
+  opacity: 0.8;
 }
 .tagcloud a:before {
   content: " ";
@@ -2060,7 +2058,7 @@ pre .javascript .function {
 }
 .article-tag:before {
   float: left;
-  color: #008000;
+  color: #999;
   content: "\f06c";
   font: 16px FontAwesome;
   float: left;
@@ -2079,7 +2077,7 @@ pre .javascript .function {
 }
 .article-category:before {
   float: left;
-  color: #f00;
+  color: #999;
   content: "\f02d";
   font: 16px FontAwesome;
   float: left;
