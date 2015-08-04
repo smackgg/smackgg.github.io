@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-6.png">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-7.png">
 <meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-8.png">
-<meta property="og:updated_time" content="2015-08-04T09:30:09.400Z">
+<meta property="og:updated_time" content="2015-08-04T16:04:30.180Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript数据访问的优化">
 <meta name="twitter:description" content="第二章 Data Access 数据访问本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。
@@ -377,7 +377,7 @@ alert<span class="params">(book.hasOwnProperty<span class="params">(<span class=
 alert<span class="params">(book.hasOwnProperty<span class="params">(<span class="string">"toString"</span>)</span>)</span>; <span class="comment">//false</span>
 alert<span class="params">(<span class="string">"title"</span> in book)</span>; <span class="comment">//true</span>
 alert<span class="params">(<span class="string">"toString"</span> in book)</span>; <span class="comment">//true</span>
-</code></pre><p>此代码中， hasOwnProperty()传入“title”时返回true， 因为title是一个实例成员。 传入“toString”时返回false，因为 toString 不在实例之中。如果使用 in 操作符检测这两个属性，那么返回都是 true，因为它既搜索实例又搜索原形。<br><strong>Prototype Chains 原形链</strong><br>对象的原形决定了一个实例的类型。默认情况下，所有对象都是 Object 的实例，并继承了所有基本方法，如 toString()。你可以用“构造器”创建另外一种类型的原形。例如：</p>
+</code></pre><p>　　此代码中， hasOwnProperty()传入“title”时返回true， 因为title是一个实例成员。 传入“toString”时返回false，因为 toString 不在实例之中。如果使用 in 操作符检测这两个属性，那么返回都是 true，因为它既搜索实例又搜索原形。<br><strong>Prototype Chains 原形链</strong><br>对象的原形决定了一个实例的类型。默认情况下，所有对象都是 Object 的实例，并继承了所有基本方法，如 toString()。你可以用“构造器”创建另外一种类型的原形。例如：</p>
 <pre><code><span class="function"><span class="keyword">function</span> <span class="title">Book</span>(<span class="params">title, publisher</span>)</span>{
     <span class="keyword">this</span>.title = title;
     <span class="keyword">this</span>.publisher = publisher;
@@ -392,11 +392,11 @@ alert(book1 <span class="keyword">instanceof</span> <span class="built_in">Objec
 book1.sayTitle(); <span class="comment">//"High Performance JavaScript"</span>
 alert(book1.toString()); <span class="comment">//"[object Object]"</span>
 </code></pre><p>原型链关系如下图：<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-8.png" alt="原形链"><br>　　注意，两个 Book 实例共享同一个原形链。每个实例拥有自己的 title 和 publisher 属性，但其他成员均继承自原形。当 book1.toString()被调用时，搜索工作必须深入原形链才能找到对象成员“toString”。正如你所<br>怀疑的那样，深入原形链越深，搜索的速度就会越慢。图2-11显示出成员在原形链中所处的深度与访问时间的关系。<br>　　虽然使用优化 JavaScript 引擎的新式浏览器在此任务中表现良好，但是老的浏览器，特别是 Internet Explorer 和 Firefox 3.5，每深入原形链一层都会增加性能损失。记住，搜索实例成员的过程比访问直接量<br>或者局部变量负担更重，所以增加遍历原形链的开销正好放大了这种效果。</p>
-<p><strong>Nested Members 嵌套成员</strong><br>由于对象成员可能包含其它成员， 例如不太常见的写法 window.location.href 这种模式每遇到一个点号，JavaScript 引擎就要在对象成员上执行一次解析过程。成员嵌套越深，访问速度越慢。location.href 总是快于 window.location.href，而后者也要<br>比 window.location.href.toString()更快。<br><strong>Caching Object Member Values 缓存对象成员的值</strong></p>
+<p><strong>Nested Members 嵌套成员</strong><br>　　由于对象成员可能包含其它成员， 例如不太常见的写法 window.location.href 这种模式每遇到一个点号，JavaScript 引擎就要在对象成员上执行一次解析过程。成员嵌套越深，访问速度越慢。location.href 总是快于 window.location.href，而后者也要<br>比 window.location.href.toString()更快。<br><strong>Caching Object Member Values 缓存对象成员的值</strong></p>
 <pre><code><span class="function"><span class="keyword">function</span> <span class="title">hasEitherClass</span><span class="params">(element, className1, className2)</span></span>{
     <span class="keyword">return</span> element.className == className1 || element.className == className2;
 }
-</code></pre><p>这段代码中element.className被访问了两次，而且在这个函数过程中它的值是不会变的。所以优化如下：</p>
+</code></pre><p>　　这段代码中element.className被访问了两次，而且在这个函数过程中它的值是不会变的。所以优化如下：</p>
 <pre><code><span class="function"><span class="keyword">function</span> <span class="title">hasEitherClass</span><span class="params">(element, className1, className2)</span></span>{
     <span class="keyword">var</span> currentClassName = element.className;
     <span class="keyword">return</span> currentClassName == className1 || currentClassName == className2;
@@ -405,7 +405,7 @@ alert(book1.toString()); <span class="comment">//"[object Object]"</span>
 <p>一般来说，如果在同一个函数中你要多次读取同一个对象属性，最好将它存入一个局部变量。以局部变量替代属性，避免多余的属性查找带来性能开销。在处理嵌套对象成员时这点特别重要，它们会对运行速度产生难以置信的影响。</p>
 </blockquote>
 <h1 id="Summary_总结">Summary 总结</h1><hr>
-<p>在JavaScript中，数据存储位置可以对代码整体性能产生重要影响。有四种数据访问类型：直接量，变量，数组项，对象成员。它们有不同的性能考虑。</p>
+<p>　　在JavaScript中，数据存储位置可以对代码整体性能产生重要影响。有四种数据访问类型：直接量，变量，数组项，对象成员。它们有不同的性能考虑。</p>
 <blockquote>
 <ul>
 <li>直接量和局部变量访问速度非常快，数组项和对象成员需要更长时间。</li>
